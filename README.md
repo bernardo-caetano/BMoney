@@ -2,9 +2,12 @@
 
 https://b-money.vercel.app/
 
-### Default Transactions
+### Testing the project
 
-This project uses standard transactions to illustrate the functionality.
+To test the features, download the project and run the commands:
+`npm install`
+`npm run dev`
+Copy the url with your ip and paste it in the services>api file, in order to correct the api address.
 
 ### Getting Started with Vite
 
