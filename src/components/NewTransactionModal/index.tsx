@@ -4,7 +4,9 @@ import closeImg from "../../assets/close.png"
 import incomeImg from "../../assets/in.png"
 import outcomeImg from "../../assets/out.png"
 import { FormEvent, useState } from "react";
-import { api } from "../../services/api";
+
+import { useTransactions } from "../../hooks/useTransactions";
+
 
 
 type NewTransactionModalProps = {
@@ -15,22 +17,29 @@ type NewTransactionModalProps = {
 
 export function NewTransactionModal ( {isOpen, onRequestClose}: NewTransactionModalProps ) {
 
+    const { createTransaction } = useTransactions()
+
     const [type,setType] = useState('deposit')
     const [title,setTitle] = useState('')
-    const [value,setValue] = useState(0) 
+    const [amount,setAmount] = useState(0) 
     const [category,setCategory] = useState('')
 
 
-    function handleCreateNewTransaction(e: FormEvent){
+    async function handleCreateNewTransaction(e: FormEvent){
         e.preventDefault();
 
-    const data = {
-        title,
-        value,
-        category,
-        type}
+        await createTransaction({
+            title,
+            amount,
+            category,
+            type,
+        })
+        setTitle('')
+        setAmount(0)
+        setCategory('')
+        setType('deposit')
 
-    api.post('/transactions', data)
+        onRequestClose()
     }
 
     return (
@@ -62,8 +71,8 @@ export function NewTransactionModal ( {isOpen, onRequestClose}: NewTransactionMo
                     <input
                         type="number"
                         placeholder="Valor"
-                        value={value}
-                        onChange={e => setValue(Number(e.target.value))}
+                        value={amount}
+                        onChange={e => setAmount(Number(e.target.value))}
                     />
 
                     <input
