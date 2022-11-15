@@ -3,7 +3,10 @@ import { Container, TransactionTypeContainer, RadioBox } from "./styles";
 import closeImg from "../../assets/close.png"
 import incomeImg from "../../assets/in.png"
 import outcomeImg from "../../assets/out.png"
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { api } from "../../services/api";
+
+
 type NewTransactionModalProps = {
     isOpen: boolean;
     onRequestClose: () => void;
@@ -12,10 +15,23 @@ type NewTransactionModalProps = {
 
 export function NewTransactionModal ( {isOpen, onRequestClose}: NewTransactionModalProps ) {
 
-    const [type,setType] = useState('deposit') 
+    const [type,setType] = useState('deposit')
+    const [title,setTitle] = useState('')
+    const [value,setValue] = useState(0) 
+    const [category,setCategory] = useState('')
 
 
+    function handleCreateNewTransaction(e: FormEvent){
+        e.preventDefault();
 
+    const data = {
+        title,
+        value,
+        category,
+        type}
+
+    api.post('/transactions', data)
+    }
 
     return (
         <Modal 
@@ -33,21 +49,27 @@ export function NewTransactionModal ( {isOpen, onRequestClose}: NewTransactionMo
                     <img src={closeImg} alt="Fechar modal" />
                 </button>
 
-                <Container>
+                <Container onSubmit={handleCreateNewTransaction}>
                     <h2>Cadastrar Transação</h2>  
 
 
                     <input
                         placeholder="Título"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
                     />
 
                     <input
                         type="number"
                         placeholder="Valor"
+                        value={value}
+                        onChange={e => setValue(Number(e.target.value))}
                     />
 
                     <input
                         placeholder="Categoria"
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}
                     />
 
                     <TransactionTypeContainer>

@@ -16,8 +16,8 @@ export const Content = styled.div `
 
     button { //encadeiamento de componentes. Nesse caso será aplicado esse estilo somente para o button dentro de content dentro do arquivo header.
         font-size: 1rem;
-        color: #fff;
-        background: var(--blue-light);
+        color: var(--blue);
+        background: var(--shape);
         border: 0;
         padding: 0 2rem;
         border-radius: 0.25rem;
